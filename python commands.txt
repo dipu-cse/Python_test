@@ -1,0 +1,69 @@
+django commands
+=======================================
+
+1. creating a project
+django-admin startproject mysite
+
+2. The delevopment server
+py manage.py runserver
+
+3. Create apps in project
+py manage.py startapp polls
+
+4. Write your first view
+from django.http import HttpResponse
+def index(request):
+    return HttpResponse("Hello, world. You're at the polls index.")
+
+5. we need to map it to a URL - and for this we need a URLconf(urls.py)
+from django.urls import path
+from . import views
+urlpatterns = [
+    path('', views.index, name='index'),
+]
+
+6. In mysite/urls.py, add an import for django.urls.include and insert an include() in the urlpatterns list(mysite/urls.py)
+from django.contrib import admin
+from django.urls import include, path
+urlpatterns = [
+    path('polls/', include('polls.urls')),
+    path('admin/', admin.site.urls),
+]
+
+7. applications make use of at least one database table, though, so we need to create the tables in the database before we can use them. 
+py manage.py migrate
+
+8. Models/table create (myapps/models.py)
+class Question(models.Model):
+    question_text = models.CharField(max_length=200)
+    pub_date = models.DateTimeField('date published')
+
+9. need to add a reference to its configuration class in the INSTALLED_APPS setting(mysite/settings.py)
+INSTALLED_APPS = [
+    'polls.apps.PollsConfig',
+
+10. now to migrate our apps
+py manage.py makemigrations
+py manage.py makemigrations polls
+
+11. Need to apps sql migration
+py manage.py sqlmigrate polls 0001
+
+12. checking before migrate
+py manage.py check
+
+13. table migrate in database
+py manage.py migrate
+
+14. Creating an admin user
+py manage.py createsuperuser
+
+15. make apps modification in admin deshboard(apps/admin.py
+from django.contrib import admin
+from .models import Question
+admin.site.register(Question))
+
+16. Template folder directory in apps root folder (templates>{app name}) 
+in this apps name folder in templates folder is our main django templates directory
+
+
